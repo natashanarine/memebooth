@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0a;
+  color: #ffffff;
+  font-family: 'Space Grotesk', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Glitch animation for title */
+@keyframes glitch {
+  0%   { text-shadow:  2px 0 #ff2d55, -2px 0 #00ff88; }
+  20%  { text-shadow: -2px 0 #ff2d55,  2px 0 #00ff88; }
+  40%  { text-shadow:  2px 2px #ff2d55, -2px -2px #00ff88; }
+  60%  { text-shadow: -2px 2px #00ff88,  2px -2px #ff2d55; }
+  80%  { text-shadow:  2px 0 #00ff88, -2px 0 #ff2d55; }
+  100% { text-shadow:  2px 0 #ff2d55, -2px 0 #00ff88; }
+}
+
+.glitch-text {
+  animation: glitch 3s infinite;
+}
+
+/* Countdown flash */
+@keyframes countdownPop {
+  0%   { opacity: 0; transform: scale(2); }
+  20%  { opacity: 1; transform: scale(1); }
+  80%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+.countdown-pop {
+  animation: countdownPop 0.9s ease-in-out forwards;
+}
+
+/* Photo flash */
+@keyframes captureFlash {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.capture-flash {
+  animation: captureFlash 0.5s ease-out forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
