@@ -31,6 +31,18 @@ export const ALL_MEMES: Meme[] = [
     imageUrl: '/memes/monkey-sus.jpg',
   },
   {
+    id: 'heart',
+    name: 'Luv U',
+    pose: 'make a heart shape with both hands at your chest',
+    imageUrl: '/memes/monkey-heart.jpg',
+  },
+  {
+    id: 'monkey-omg',
+    name: 'OMG',
+    pose: 'clasp both hands together at your chest',
+    imageUrl: '/memes/monkey-omg.jpg',
+  },
+  {
     id: 'shocked',
     name: 'Soft Launch',
     pose: 'cup both hands under your chin',
@@ -115,22 +127,10 @@ export const ALL_MEMES: Meme[] = [
     imageUrl: '/memes/me.jpg',
   },
   {
-    id: 'heart',
-    name: 'Luv U',
-    pose: 'make a heart shape with both hands at your chest',
-    imageUrl: '/memes/monkey-heart.jpg',
-  },
-  {
     id: 'timeout',
     name: 'Time Out',
     pose: 'make a T with your hands in front of you',
     imageUrl: '/memes/timeout.jpg',
-  },
-  {
-    id: 'monkey-omg',
-    name: 'OMG',
-    pose: 'clasp both hands together at your chest',
-    imageUrl: '/memes/monkey-omg.jpg',
   },
   {
     id: 'thumbs-up',
