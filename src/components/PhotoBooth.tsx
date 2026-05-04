@@ -166,12 +166,24 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
         await tf.ready();
         const poseDetection = await import('@tensorflow-models/pose-detection');
         if (cancelled) return;
-        const detector = await poseDetection.createDetector(
-          poseDetection.SupportedModels.MoveNet,
-          { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER }
-        );
+
+        let detector: PoseDetector | null = null;
+
+        // Try Thunder first (more accurate), fall back to Lightning on low-memory devices
+        try {
+          detector = await poseDetection.createDetector(
+            poseDetection.SupportedModels.MoveNet,
+            { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER }
+          ) as PoseDetector;
+        } catch {
+          detector = await poseDetection.createDetector(
+            poseDetection.SupportedModels.MoveNet,
+            { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+          ) as PoseDetector;
+        }
+
         if (cancelled) { detector.dispose(); return; }
-        detectorRef.current = detector as PoseDetector;
+        detectorRef.current = detector;
         setAiReady(true);
         updatePhase('posing');
       } catch {
