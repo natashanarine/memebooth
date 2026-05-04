@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { QRCodeCanvas } from 'qrcode.react';
 import type { Meme } from '../lib/memes';
 
 interface ResultPageProps {
@@ -15,9 +14,6 @@ const CARD_H = 1920;
 export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [compositeUrl, setCompositeUrl] = useState<string | null>(null);
-  const [qrValue, setQrValue] = useState<string | null>(null);
-  const [showQr, setShowQr] = useState(false);
-  const [qrError, setQrError] = useState(false);
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
@@ -42,15 +38,12 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
         img.src = src;
       });
 
-    // Assign to non-null local so TS is satisfied inside async closure
     const c: CanvasRenderingContext2D = ctx;
 
     async function draw() {
-      // Background
       c.fillStyle = '#0a0a0a';
       c.fillRect(0, 0, CARD_W, CARD_H);
 
-      // Vertical divider
       c.strokeStyle = '#333';
       c.lineWidth = 2;
       c.beginPath();
@@ -61,7 +54,6 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
       for (let i = 0; i < count; i++) {
         const y = i * slotH;
 
-        // Left: meme reference
         try {
           const memeImg = await loadImage(memes[i].imageUrl);
           c.save();
@@ -78,7 +70,6 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
           c.fillRect(0, y, halfW - 1, slotH);
         }
 
-        // Right: user photo
         try {
           const userImg = await loadImage(photos[i]);
           c.save();
@@ -95,7 +86,6 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
           c.fillRect(halfW + 1, y, halfW - 1, slotH);
         }
 
-        // Horizontal slot divider
         if (i < count - 1) {
           c.strokeStyle = '#333';
           c.lineWidth = 2;
@@ -112,7 +102,7 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
       c.fillStyle = '#444';
       c.font = 'bold 28px "Space Grotesk", sans-serif';
       c.textAlign = 'center';
-      c.fillText('MEME BOOTH', CARD_W / 2, CARD_H - 26);
+      c.fillText('MEMEBOOTH BY @NATASHANARIINE', CARD_W / 2, CARD_H - 26);
 
       setCompositeUrl(canvas!.toDataURL('image/jpeg', 0.92));
     }
@@ -125,26 +115,9 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
     setDownloading(true);
     const a = document.createElement('a');
     a.href = compositeUrl;
-    a.download = 'meme-booth.jpg';
+    a.download = 'memebooth.jpg';
     a.click();
     setTimeout(() => setDownloading(false), 1000);
-  };
-
-  const handleQr = () => {
-    if (!compositeUrl) return;
-    if (compositeUrl.length > 2800) {
-      setQrError(true);
-      setShowQr(true);
-    } else {
-      setQrValue(compositeUrl);
-      setQrError(false);
-      setShowQr(true);
-    }
-  };
-
-  const handleCopy = async () => {
-    if (!compositeUrl) return;
-    try { await navigator.clipboard.writeText(compositeUrl); } catch { /* ignore */ }
   };
 
   return (
@@ -163,10 +136,8 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
       </h1>
       <p className="text-gray-500 text-sm uppercase tracking-widest mb-8">4 poses. 1 strip.</p>
 
-      {/* Hidden canvas for composition */}
       <canvas ref={canvasRef} className="hidden" />
 
-      {/* Preview card — display-only, aspect ratio 9:16 */}
       <motion.div
         className="relative rounded-2xl overflow-hidden mb-8"
         style={{
@@ -188,7 +159,6 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
         )}
       </motion.div>
 
-      {/* Buttons */}
       <div className="flex flex-col items-center gap-3 w-full max-w-xs">
         <motion.button
           onClick={handleDownload}
@@ -206,23 +176,6 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
         </motion.button>
 
         <motion.button
-          onClick={handleQr}
-          disabled={!compositeUrl}
-          className="w-full py-4 rounded-full font-black text-sm uppercase tracking-widest"
-          style={{
-            background: '#111',
-            color: compositeUrl ? '#fff' : '#333',
-            border: '1px solid',
-            borderColor: compositeUrl ? '#333' : '#1a1a1a',
-            cursor: compositeUrl ? 'pointer' : 'not-allowed',
-          }}
-          whileHover={compositeUrl ? { scale: 1.03 } : {}}
-          whileTap={compositeUrl ? { scale: 0.97 } : {}}
-        >
-          ⬡ generate QR code
-        </motion.button>
-
-        <motion.button
           onClick={onRestart}
           className="w-full py-4 rounded-full font-black text-sm uppercase tracking-widest"
           style={{ background: 'transparent', color: '#444', border: '1px solid #222' }}
@@ -232,57 +185,6 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
           ↺ start over
         </motion.button>
       </div>
-
-      {/* QR modal */}
-      {showQr && (
-        <motion.div
-          className="fixed inset-0 flex items-center justify-center z-50 px-4"
-          style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          onClick={() => setShowQr(false)}
-        >
-          <motion.div
-            className="rounded-2xl p-8 flex flex-col items-center gap-4 max-w-sm w-full"
-            style={{ background: '#111', border: '1px solid #333' }}
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            onClick={e => e.stopPropagation()}
-          >
-            {qrError ? (
-              <>
-                <div className="text-center text-yellow-400 font-bold text-sm">
-                  Photo too large for a QR code
-                </div>
-                <p className="text-center text-gray-400 text-xs">
-                  QR codes hold ~3 KB max. Use Download to save your strip, or copy the raw data URL below.
-                </p>
-                <button
-                  onClick={handleCopy}
-                  className="px-8 py-3 rounded-full font-bold text-sm uppercase tracking-widest bg-white text-black"
-                >
-                  Copy data URL
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="p-4 bg-white rounded-xl">
-                  <QRCodeCanvas value={qrValue ?? ''} size={200} />
-                </div>
-                <p className="text-center text-gray-400 text-xs">
-                  Scan to save on mobile — QR links to your photo data.
-                </p>
-              </>
-            )}
-            <button
-              onClick={() => setShowQr(false)}
-              className="text-xs uppercase tracking-widest text-gray-600 hover:text-white mt-2"
-            >
-              close
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
     </motion.div>
   );
 }

@@ -442,7 +442,7 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
                 style={{ background: 'rgba(0,0,0,0.75)' }}>
                 <div className="w-8 h-8 rounded-full border-2 border-white border-t-transparent animate-spin" />
                 <span className="text-white text-xs uppercase tracking-widest" style={IMPACT}>
-                  {phase === 'cam-loading' ? 'starting camera...' : 'loading AI model...'}
+                  starting up...
                 </span>
               </div>
             )}
