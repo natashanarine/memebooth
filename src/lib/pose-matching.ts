@@ -123,6 +123,75 @@ export function scorePose(memeId: string, keypoints: Keypoint[]): number {
       return Math.max(aboveShoulder(rightWrist, rightShoulder), aboveShoulder(leftWrist, leftShoulder));
     }
 
+    case 'pool-laugh': {
+      // Both hands behind head — wrists near ears, above shoulders
+      const ref = leftEar ?? rightEar ?? nose;
+      if (!ref) return 0;
+      const l = near(leftWrist,  ref, sw * 1.5);
+      const r = near(rightWrist, ref, sw * 1.5);
+      return (l + r) / 2;
+    }
+
+    case 'fists-chin': {
+      // Both fists under chin — wrists near nose/mouth level, close together
+      const ref = nose ?? leftShoulder;
+      if (!ref || !leftWrist || !rightWrist) return 0;
+      const proximity = (near(leftWrist, ref, sw * 2) + near(rightWrist, ref, sw * 2)) / 2;
+      const together  = clamp(1 - dist(leftWrist, rightWrist) / (sw * 1.5));
+      return proximity * 0.6 + together * 0.4;
+    }
+
+    case 'point-forward': {
+      // Both arms extended forward at roughly shoulder height — wrists far from body, spread wide
+      if (!leftWrist || !rightWrist || !leftShoulder || !rightShoulder) return 0;
+      const spread      = Math.abs(leftWrist.x - rightWrist.x);
+      const spreadScore = clamp((spread - sw * 0.8) / (sw * 2));
+      // Wrists near shoulder height (not above, not below)
+      const lLevel = clamp(1 - Math.abs(leftWrist.y  - leftShoulder.y)  / (sw * 1.2));
+      const rLevel = clamp(1 - Math.abs(rightWrist.y - rightShoulder.y) / (sw * 1.2));
+      return spreadScore * 0.5 + ((lLevel + rLevel) / 2) * 0.5;
+    }
+
+    case 'sus': {
+      // One finger near mouth/chin — same as thinking but tighter zone
+      const ref = nose ?? leftShoulder;
+      if (!ref) return 0;
+      return Math.max(near(rightWrist, ref, sw * 1.2), near(leftWrist, ref, sw * 1.2));
+    }
+
+    case 'victory': {
+      // Both fists pumped up — both wrists high above shoulders
+      if (!leftWrist || !leftShoulder || !rightWrist || !rightShoulder) return 0;
+      const l = clamp((leftShoulder.y  - leftWrist.y  + sw * 0.5) / (sw * 1.5));
+      const r = clamp((rightShoulder.y - rightWrist.y + sw * 0.5) / (sw * 1.5));
+      return (l + r) / 2;
+    }
+
+    case 'hands-on-head': {
+      // Both hands on top of head — wrists near ears/top of head, close to each other
+      const ref = nose ?? leftEar ?? rightEar;
+      if (!ref || !leftWrist || !rightWrist) return 0;
+      const proximity = (near(leftWrist, ref, sw * 1.5) + near(rightWrist, ref, sw * 1.5)) / 2;
+      return proximity;
+    }
+
+    case 'finger-bite': {
+      // One hand near mouth — wrist very close to nose
+      const ref = nose ?? leftShoulder;
+      if (!ref) return 0;
+      return Math.max(near(rightWrist, ref, sw * 1.0), near(leftWrist, ref, sw * 1.0));
+    }
+
+    case 'arms-wide': {
+      // Arms spread wide at shoulder height — maximum wrist spread
+      if (!leftWrist || !rightWrist || !leftShoulder || !rightShoulder) return 0;
+      const spread      = Math.abs(leftWrist.x - rightWrist.x);
+      const spreadScore = clamp((spread - sw * 1.5) / (sw * 2));
+      const lLevel      = clamp(1 - Math.abs(leftWrist.y  - leftShoulder.y)  / (sw * 1.5));
+      const rLevel      = clamp(1 - Math.abs(rightWrist.y - rightShoulder.y) / (sw * 1.5));
+      return spreadScore * 0.6 + ((lLevel + rLevel) / 2) * 0.4;
+    }
+
     default:
       return 0;
   }
