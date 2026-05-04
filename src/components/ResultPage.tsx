@@ -140,10 +140,16 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
         AW SO CUTE!
       </h1>
       <p
-        className="text-gray-500 text-sm uppercase tracking-widest mb-8"
+        className="text-gray-500 text-sm uppercase tracking-widest"
         style={{ fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
       >
-        DON'T FORGET TO POST IT ON YOUR STORY
+        DON'T FORGET TO DOWNLOAD AND POST ON YOUR STORY
+      </p>
+      <p
+        className="text-gray-600 mb-8 mt-1"
+        style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: '0.65rem' }}
+      >
+        and tag @natashanariine because she wants to see it
       </p>
 
       <canvas ref={canvasRef} className="hidden" />
