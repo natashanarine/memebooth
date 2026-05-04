@@ -270,6 +270,37 @@ export function scorePose(memeId: string, keypoints: Keypoint[]): number {
       return Math.max(lScore, rScore);
     }
 
+    case 'pray': {
+      // Both hands clasped near face — wrists close together AND near nose
+      const ref = nose ?? leftShoulder;
+      if (!ref || !leftWrist || !rightWrist) return 0;
+      const together  = clamp(1 - dist(leftWrist, rightWrist) / (sw * 1.0));
+      const proximity = (near(leftWrist, ref, sw * 2) + near(rightWrist, ref, sw * 2)) / 2;
+      return together * 0.5 + proximity * 0.5;
+    }
+
+    case 'palm-out': {
+      // One arm extended forward at shoulder height, palm out — wrist far from body, at shoulder level
+      if (!leftShoulder || !rightShoulder) return 0;
+      const midX = (leftShoulder.x + rightShoulder.x) / 2;
+      const lExtend = leftWrist
+        ? clamp(Math.abs(leftWrist.x - midX) / (sw * 1.5)) *
+          clamp(1 - Math.abs(leftWrist.y - leftShoulder.y) / (sw * 1.2))
+        : 0;
+      const rExtend = rightWrist
+        ? clamp(Math.abs(rightWrist.x - midX) / (sw * 1.5)) *
+          clamp(1 - Math.abs(rightWrist.y - rightShoulder.y) / (sw * 1.2))
+        : 0;
+      return Math.max(lExtend, rExtend);
+    }
+
+    case 'devastated': {
+      // One hand covering mouth — wrist very close to nose/mouth
+      const ref = nose ?? leftShoulder;
+      if (!ref) return 0;
+      return Math.max(near(rightWrist, ref, sw * 1.0), near(leftWrist, ref, sw * 1.0));
+    }
+
     default:
       return 0;
   }

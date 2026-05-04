@@ -138,6 +138,24 @@ export const ALL_MEMES: Meme[] = [
     pose: 'give a thumbs up at chest level',
     imageUrl: '/memes/thumbs-up.jpg',
   },
+  {
+    id: 'pray',
+    name: 'Please',
+    pose: 'clasp both hands together near your face',
+    imageUrl: '/memes/pray.jpg',
+  },
+  {
+    id: 'palm-out',
+    name: 'No No No',
+    pose: 'extend one arm forward with your palm facing out',
+    imageUrl: '/memes/palm-out.jpg',
+  },
+  {
+    id: 'devastated',
+    name: 'Devastated',
+    pose: 'cover your mouth with one hand',
+    imageUrl: '/memes/devastated.jpg',
+  },
 ];
 
 export const TRAIL_IMAGES = ALL_MEMES.map(m => m.imageUrl);
