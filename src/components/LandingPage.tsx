@@ -44,6 +44,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
             fontSize: 'clamp(4rem, 13vw, 10rem)',
             color: '#ffffff',
             WebkitTextStroke: '5px #000000',
+            letterSpacing: '-0.03em',
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
