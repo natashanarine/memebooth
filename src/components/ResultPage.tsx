@@ -16,6 +16,7 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [compositeUrl, setCompositeUrl] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [shareMsg, setShareMsg] = useState<string | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -111,6 +112,22 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
     draw();
   }, [memes, photos]);
 
+  const handleShare = async () => {
+    if (!compositeUrl) return;
+    try {
+      const blob = await fetch(compositeUrl).then(r => r.blob());
+      const file = new File([blob], 'memebooth.jpg', { type: 'image/jpeg' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'Meme Booth' });
+      } else {
+        setShareMsg('open on your phone to share to instagram ✦');
+        setTimeout(() => setShareMsg(null), 3500);
+      }
+    } catch {
+      // user cancelled share — do nothing
+    }
+  };
+
   const handleDownload = () => {
     if (!compositeUrl) return;
     setDownloading(true);
@@ -198,6 +215,12 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
         transition={{ delay: 0.5, duration: 0.4 }}
       >
         <CartoonButton
+          label="✦ post to story"
+          color="bg-fuchsia-400"
+          disabled={!compositeUrl}
+          onClick={handleShare}
+        />
+        <CartoonButton
           label={downloading ? 'downloading...' : '↓ download'}
           color="bg-white"
           disabled={!compositeUrl || downloading}
@@ -208,6 +231,20 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
           color="bg-zinc-300"
           onClick={onRestart}
         />
+
+        <AnimatePresence>
+          {shareMsg && (
+            <motion.p
+              className="text-center text-xs uppercase tracking-widest mt-1"
+              style={{ color: '#888', fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+            >
+              {shareMsg}
+            </motion.p>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   );
