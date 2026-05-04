@@ -101,7 +101,6 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
   const [capturedPhotos, setCapturedPhotos] = useState<string[]>([]);
   const [showFlash, setShowFlash] = useState(false);
   const [aiReady, setAiReady] = useState(false);
-  const [showSkeleton, setShowSkeleton] = useState(false);
 
   const getReadyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const photosRef = useRef<string[]>([]);
@@ -117,15 +116,6 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
   const updatePhase = useCallback((p: Phase) => { phaseRef.current = p; setPhase(p); }, []);
   const updateMatch = useCallback((v: number) => { matchRef.current = v; setMatchScore(v); }, []);
 
-  const toggleSkeleton = useCallback(() => {
-    const next = !showSkeletonRef.current;
-    showSkeletonRef.current = next;
-    setShowSkeleton(next);
-    if (!next && overlayCanvasRef.current) {
-      const ctx = overlayCanvasRef.current.getContext('2d');
-      ctx?.clearRect(0, 0, overlayCanvasRef.current.width, overlayCanvasRef.current.height);
-    }
-  }, []);
 
   // Stage 1: Camera
   useEffect(() => {
