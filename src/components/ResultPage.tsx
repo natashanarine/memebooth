@@ -100,7 +100,7 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
       c.fillStyle = '#0a0a0a';
       c.fillRect(0, CARD_H - 80, CARD_W, 80);
       c.fillStyle = '#444';
-      c.font = 'bold 28px "Space Grotesk", sans-serif';
+      c.font = '32px Impact, "Arial Narrow Bold", sans-serif';
       c.textAlign = 'center';
       c.fillText('MEMEBOOTH BY @NATASHANARIINE', CARD_W / 2, CARD_H - 26);
 
