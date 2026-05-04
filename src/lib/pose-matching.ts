@@ -192,6 +192,84 @@ export function scorePose(memeId: string, keypoints: Keypoint[]): number {
       return spreadScore * 0.6 + ((lLevel + rLevel) / 2) * 0.4;
     }
 
+    case 'shy': {
+      // One hand scratching back of neck — wrist near ear
+      const refL = leftEar  ?? nose;
+      const refR = rightEar ?? nose;
+      if (!refL && !refR) return 0;
+      return Math.max(
+        refL ? near(leftWrist,  refL, sw * 1.2) : 0,
+        refR ? near(rightWrist, refR, sw * 1.2) : 0,
+      );
+    }
+
+    case 'hair-flip': {
+      // One hand tucking hair behind ear — wrist near ear
+      const refL = leftEar  ?? nose;
+      const refR = rightEar ?? nose;
+      if (!refL && !refR) return 0;
+      return Math.max(
+        refL ? near(leftWrist,  refL, sw * 1.4) : 0,
+        refR ? near(rightWrist, refR, sw * 1.4) : 0,
+      );
+    }
+
+    case 'chill': {
+      // Both hands laced behind head — both wrists near ears, above shoulders
+      const refL = leftEar  ?? nose;
+      const refR = rightEar ?? nose;
+      if (!refL || !refR || !leftWrist || !rightWrist) return 0;
+      const l = near(leftWrist,  refL, sw * 1.5);
+      const r = near(rightWrist, refR, sw * 1.5);
+      return (l + r) / 2;
+    }
+
+    case 'me': {
+      // Pointing at yourself — one wrist near chest (between chin and belly)
+      const ref = leftShoulder && rightShoulder
+        ? { x: (leftShoulder.x + rightShoulder.x) / 2, y: (leftShoulder.y + rightShoulder.y) / 2 + sw * 0.3, score: 1, name: 'chest' }
+        : leftShoulder ?? rightShoulder;
+      if (!ref) return 0;
+      return Math.max(near(rightWrist, ref as KP, sw * 1.5), near(leftWrist, ref as KP, sw * 1.5));
+    }
+
+    case 'heart': {
+      // Both hands forming a heart at chest — wrists close together at mid-body
+      if (!leftWrist || !rightWrist) return 0;
+      const together = clamp(1 - dist(leftWrist, rightWrist) / (sw * 1.2));
+      const ref = leftShoulder ?? rightShoulder;
+      const heightScore = ref
+        ? clamp(1 - Math.abs((leftWrist.y + rightWrist.y) / 2 - ref.y) / (sw * 1.5))
+        : 0.5;
+      return together * 0.7 + heightScore * 0.3;
+    }
+
+    case 'timeout': {
+      // T sign — wrists close horizontally, one above the other
+      if (!leftWrist || !rightWrist) return 0;
+      const vDiff = Math.abs(leftWrist.y - rightWrist.y);
+      const hDiff = Math.abs(leftWrist.x - rightWrist.x);
+      // T shape: wrists stacked vertically (small horizontal gap) at chest height
+      const stackScore = clamp(1 - hDiff / (sw * 1.5)) * clamp(vDiff / (sw * 0.8));
+      return stackScore;
+    }
+
+    case 'monkey-omg': {
+      // Both hands clasped at chest — wrists together at chest level
+      if (!leftWrist || !rightWrist) return 0;
+      const together = clamp(1 - dist(leftWrist, rightWrist) / (sw * 1.0));
+      return together;
+    }
+
+    case 'thumbs-up': {
+      // Thumbs up at chest — one wrist at chest/shoulder height, not raised overhead
+      const ref = leftShoulder ?? rightShoulder;
+      if (!ref) return 0;
+      const lScore = leftWrist  ? clamp(1 - Math.abs(leftWrist.y  - ref.y) / (sw * 1.2)) : 0;
+      const rScore = rightWrist ? clamp(1 - Math.abs(rightWrist.y - ref.y) / (sw * 1.2)) : 0;
+      return Math.max(lScore, rScore);
+    }
+
     default:
       return 0;
   }

@@ -90,6 +90,54 @@ export const ALL_MEMES: Meme[] = [
     pose: 'spread both arms out wide to your sides',
     imageUrl: '/memes/arms-wide.jpg',
   },
+  {
+    id: 'shy',
+    name: 'Shy',
+    pose: 'scratch the back of your neck',
+    imageUrl: '/memes/shy.jpg',
+  },
+  {
+    id: 'hair-flip',
+    name: 'Oop',
+    pose: 'tuck your hair behind your ear',
+    imageUrl: '/memes/hair-flip.jpg',
+  },
+  {
+    id: 'chill',
+    name: 'Chill',
+    pose: 'lace both hands behind your head',
+    imageUrl: '/memes/chill.jpg',
+  },
+  {
+    id: 'me',
+    name: 'Me??',
+    pose: 'point at yourself with one finger',
+    imageUrl: '/memes/me.jpg',
+  },
+  {
+    id: 'heart',
+    name: 'Luv U',
+    pose: 'make a heart shape with both hands at your chest',
+    imageUrl: '/memes/monkey-heart.jpg',
+  },
+  {
+    id: 'timeout',
+    name: 'Time Out',
+    pose: 'make a T with your hands in front of you',
+    imageUrl: '/memes/timeout.jpg',
+  },
+  {
+    id: 'monkey-omg',
+    name: 'OMG',
+    pose: 'clasp both hands together at your chest',
+    imageUrl: '/memes/monkey-omg.jpg',
+  },
+  {
+    id: 'thumbs-up',
+    name: 'Solid',
+    pose: 'give a thumbs up at chest level',
+    imageUrl: '/memes/thumbs-up.jpg',
+  },
 ];
 
 export const TRAIL_IMAGES = ALL_MEMES.map(m => m.imageUrl);
