@@ -43,7 +43,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
             fontFamily: 'Impact, "Arial Narrow Bold", sans-serif',
             fontSize: 'clamp(4rem, 13vw, 10rem)',
             color: '#ffffff',
-            WebkitTextStroke: '2px #000000',
+            WebkitTextStroke: '6px #000000',
           }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
