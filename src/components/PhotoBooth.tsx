@@ -374,9 +374,9 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
         style={{ minHeight: 0, display: phase === 'error' ? 'none' : undefined }}
       >
         {/* Meme reference */}
-        <div className="w-full md:w-1/2 flex flex-col rounded-2xl overflow-hidden"
-          style={{ border: '1px solid #222', minHeight: 200, visibility: isLoading ? 'hidden' : 'visible' }}>
-          <div className="relative flex-1" style={{ minHeight: 200 }}>
+        <div className="w-full md:w-1/2 aspect-square md:aspect-auto flex flex-col rounded-2xl overflow-hidden"
+          style={{ border: '1px solid #222', visibility: isLoading ? 'hidden' : 'visible' }}>
+          <div className="relative flex-1">
             <AnimatePresence mode="wait">
               <motion.img key={meme.id} src={meme.imageUrl} alt={meme.name}
                 className="absolute inset-0 w-full h-full"
@@ -401,13 +401,12 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
         </div>
 
         {/* Webcam panel */}
-        <div className="w-full md:w-1/2 flex flex-col rounded-2xl overflow-hidden"
+        <div className="w-full md:w-1/2 aspect-square md:aspect-auto flex flex-col rounded-2xl overflow-hidden"
           style={{
             border: isLoading ? '2px solid #222' : `2px solid ${matchColor}`,
             transition: 'border-color 0.3s',
-            minHeight: 200,
           }}>
-          <div className="relative flex-1 overflow-hidden" style={{ background: '#000', minHeight: 200 }}>
+          <div className="relative flex-1 overflow-hidden" style={{ background: '#000' }}>
 
             {/* Video */}
             <video ref={videoRef}
@@ -418,11 +417,11 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
             {/* Hidden capture canvas */}
             <canvas ref={canvasRef} className="hidden" />
 
-            {/* Skeleton overlay — same mirror transform as video so coordinates align */}
+            {/* Skeleton overlay */}
             <canvas
               ref={overlayCanvasRef}
               className="absolute inset-0 w-full h-full pointer-events-none"
-              style={{ transform: 'scaleX(-1)', opacity: showSkeleton ? 1 : 0, transition: 'opacity 0.2s' }}
+              style={{ transform: 'scaleX(-1)', opacity: 0 }}
             />
 
             {showFlash && <div className="absolute inset-0 bg-white pointer-events-none" />}
@@ -492,35 +491,6 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
             )}
           </div>
 
-          {/* Skeleton toggle — only visible when AI is ready */}
-          {aiReady && !isLoading && (
-            <div className="px-4 py-2 flex items-center justify-between" style={{ background: '#111' }}>
-              <span className="text-xs uppercase tracking-widest" style={{ ...IMPACT, color: '#555' }}>
-                show tracking
-              </span>
-              <button
-                onClick={toggleSkeleton}
-                className="relative rounded-full transition-colors"
-                style={{
-                  width: 40,
-                  height: 22,
-                  background: showSkeleton ? '#00ff88' : '#333',
-                  transition: 'background 0.2s',
-                }}
-              >
-                <span
-                  className="absolute rounded-full bg-white"
-                  style={{
-                    width: 16,
-                    height: 16,
-                    top: 3,
-                    left: showSkeleton ? 21 : 3,
-                    transition: 'left 0.2s',
-                  }}
-                />
-              </button>
-            </div>
-          )}
         </div>
       </div>
 

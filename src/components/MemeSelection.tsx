@@ -70,11 +70,8 @@ export function MemeSelection({ onConfirm, onBack }: MemeSelectionProps) {
       {/* Grid */}
       <div className="flex-1 overflow-y-auto px-4 pb-32">
         <div
-          className="grid gap-4 mx-auto"
-          style={{
-            gridTemplateColumns: 'repeat(5, 1fr)',
-            maxWidth: 1400,
-          }}
+          className="grid gap-3 mx-auto w-full grid-cols-3 sm:grid-cols-4 lg:grid-cols-5"
+          style={{ maxWidth: 1400 }}
         >
           {ALL_MEMES.map(meme => {
             const isSelected = selected.has(meme.id);
