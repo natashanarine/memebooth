@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { scorePose } from '../lib/pose-matching';
 import type { Meme } from '../lib/memes';
+import { CartoonButton } from './ui/cartoon-button';
 
 interface PhotoBoothProps {
   memes: Meme[];
@@ -338,13 +339,7 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
       {/* Top bar */}
       {!isLoading && phase !== 'error' && (
         <div className="flex items-center justify-between px-6 py-4 shrink-0">
-          <button onClick={onBack}
-            className="text-xs uppercase tracking-widest transition-colors"
-            style={{ ...IMPACT, color: '#555' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-            onMouseLeave={e => (e.currentTarget.style.color = '#555')}>
-            ← exit
-          </button>
+          <CartoonButton label="← exit" color="bg-zinc-200" onClick={onBack} />
           <div className="text-center">
             <span className="text-white text-sm uppercase tracking-widest" style={IMPACT}>
               photo {currentIdx + 1} of {memes.length}
@@ -369,11 +364,7 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8">
           <div className="text-5xl">📷</div>
           <p className="text-center text-red-400 text-base max-w-sm" style={IMPACT}>{errorMsg}</p>
-          <button onClick={onBack}
-            className="px-8 py-3 rounded-full bg-white text-black text-sm uppercase tracking-widest"
-            style={IMPACT}>
-            Go Back
-          </button>
+          <CartoonButton label="Go Back" color="bg-white" onClick={onBack} />
         </div>
       )}
 
@@ -495,11 +486,7 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
                       : 'strike the pose'}
                   </div>
                 ) : (
-                  <button onClick={handleManualSnap}
-                    className="px-6 py-2 rounded-full text-black text-sm uppercase tracking-widest"
-                    style={{ ...IMPACT, background: '#00ff88' }}>
-                    📸 snap photo
-                  </button>
+                  <CartoonButton label="📸 snap photo" color="bg-emerald-400" onClick={handleManualSnap} />
                 )}
               </div>
             )}

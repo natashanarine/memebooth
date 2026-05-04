@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import type { Meme } from '../lib/memes';
+import { CartoonButton } from './ui/cartoon-button';
 
 interface ResultPageProps {
   photos: string[];
@@ -160,30 +161,17 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
       </motion.div>
 
       <div className="flex flex-col items-center gap-3 w-full max-w-xs">
-        <motion.button
-          onClick={handleDownload}
+        <CartoonButton
+          label={downloading ? 'downloading...' : '↓ download'}
+          color="bg-white"
           disabled={!compositeUrl || downloading}
-          className="w-full py-4 rounded-full font-black text-sm uppercase tracking-widest"
-          style={{
-            background: compositeUrl ? '#ffffff' : '#222',
-            color: compositeUrl ? '#000' : '#555',
-            cursor: compositeUrl ? 'pointer' : 'not-allowed',
-          }}
-          whileHover={compositeUrl ? { scale: 1.03 } : {}}
-          whileTap={compositeUrl ? { scale: 0.97 } : {}}
-        >
-          {downloading ? 'downloading...' : '↓ download'}
-        </motion.button>
-
-        <motion.button
+          onClick={handleDownload}
+        />
+        <CartoonButton
+          label="↺ start over"
+          color="bg-zinc-300"
           onClick={onRestart}
-          className="w-full py-4 rounded-full font-black text-sm uppercase tracking-widest"
-          style={{ background: 'transparent', color: '#444', border: '1px solid #222' }}
-          whileHover={{ color: '#888', borderColor: '#444' }}
-          whileTap={{ scale: 0.97 }}
-        >
-          ↺ start over
-        </motion.button>
+        />
       </div>
     </motion.div>
   );

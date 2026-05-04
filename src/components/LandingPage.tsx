@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ImageTrail } from './ui/image-trail';
 import { TRAIL_IMAGES } from '../lib/memes';
+import { CartoonButton } from './ui/cartoon-button';
 
 interface LandingPageProps {
   onStart: () => void;
@@ -53,23 +54,14 @@ export function LandingPage({ onStart }: LandingPageProps) {
           MEME BOOTH
         </motion.h1>
 
-        <motion.button
-          className="pointer-events-auto px-12 py-4 rounded-full text-xl uppercase tracking-widest"
-          style={{
-            fontFamily: 'Impact, "Arial Narrow Bold", sans-serif',
-            background: '#ffffff',
-            color: '#000000',
-            letterSpacing: '0.2em',
-          }}
+        <motion.div
+          className="pointer-events-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
-          onClick={onStart}
-          whileHover={{ scale: 1.06 }}
-          whileTap={{ scale: 0.97 }}
         >
-          START
-        </motion.button>
+          <CartoonButton label="START" color="bg-white" onClick={onStart} />
+        </motion.div>
       </div>
 
       <div

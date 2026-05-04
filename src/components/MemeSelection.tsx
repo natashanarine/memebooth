@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ALL_MEMES, type Meme } from '../lib/memes';
+import { CartoonButton } from './ui/cartoon-button';
 
 const TOTAL = ALL_MEMES.length;
 const PICK = Math.min(4, TOTAL);
@@ -46,15 +47,7 @@ export function MemeSelection({ onConfirm, onBack }: MemeSelectionProps) {
     >
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-8 pb-4">
-        <button
-          onClick={onBack}
-          className="text-sm uppercase tracking-widest transition-colors"
-          style={{ ...IMPACT, color: '#555' }}
-          onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-          onMouseLeave={e => (e.currentTarget.style.color = '#555')}
-        >
-          ← back
-        </button>
+        <CartoonButton label="← back" color="bg-zinc-200" onClick={onBack} />
         <div className="text-center">
           <h1
             className="tracking-tight leading-none text-white"
@@ -149,21 +142,12 @@ export function MemeSelection({ onConfirm, onBack }: MemeSelectionProps) {
         className="fixed bottom-0 left-0 right-0 flex justify-center pb-8 pt-6"
         style={{ background: 'linear-gradient(to top, #0a0a0a 70%, transparent)' }}
       >
-        <motion.button
-          onClick={handleConfirm}
+        <CartoonButton
+          label="Let's Go →"
+          color="bg-emerald-400"
           disabled={selected.size !== PICK}
-          className="px-16 py-4 rounded-full text-lg uppercase tracking-widest transition-all"
-          style={{
-            ...IMPACT,
-            background: selected.size === PICK ? '#00ff88' : '#1a1a1a',
-            color: selected.size === PICK ? '#000' : '#444',
-            cursor: selected.size === PICK ? 'pointer' : 'not-allowed',
-          }}
-          whileHover={selected.size === PICK ? { scale: 1.04 } : {}}
-          whileTap={selected.size === PICK ? { scale: 0.97 } : {}}
-        >
-          Let's Go →
-        </motion.button>
+          onClick={handleConfirm}
+        />
       </div>
     </motion.div>
   );
