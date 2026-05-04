@@ -140,13 +140,13 @@ export const ALL_MEMES: Meme[] = [
   },
   {
     id: 'pray',
-    name: 'Please',
+    name: 'My Shayla',
     pose: 'clasp both hands together near your face',
     imageUrl: '/memes/pray.jpg',
   },
   {
     id: 'palm-out',
-    name: 'No No No',
+    name: 'Enough',
     pose: 'extend one arm forward with your palm facing out',
     imageUrl: '/memes/palm-out.jpg',
   },
