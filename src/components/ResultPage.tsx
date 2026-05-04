@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { Meme } from '../lib/memes';
 import { CartoonButton } from './ui/cartoon-button';
 
@@ -148,7 +148,7 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
 
       <canvas ref={canvasRef} className="hidden" />
 
-      <motion.div
+      <div
         className="relative rounded-2xl overflow-hidden mb-8"
         style={{
           width: 'min(320px, calc(100vw - 32px))',
@@ -156,20 +156,47 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
           border: '1px solid #222',
           background: '#111',
         }}
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
       >
-        {compositeUrl ? (
-          <img src={compositeUrl} alt="Meme booth strip" className="w-full h-full object-cover" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="w-8 h-8 rounded-full border-2 border-white border-t-transparent animate-spin" />
-          </div>
-        )}
-      </motion.div>
+        <AnimatePresence mode="wait">
+          {compositeUrl ? (
+            <motion.div
+              key="image"
+              className="absolute inset-0"
+              initial={{ y: -420, rotate: -10, scale: 0.85, opacity: 0 }}
+              animate={{ y: 0, rotate: 0, scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 220, damping: 16, mass: 1.1 }}
+            >
+              <img src={compositeUrl} alt="Meme booth strip" className="w-full h-full object-cover" />
+              {/* Shine sweep after landing */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.45) 50%, transparent 70%)',
+                  backgroundSize: '200% 100%',
+                }}
+                initial={{ x: '-110%' }}
+                animate={{ x: '220%' }}
+                transition={{ delay: 0.7, duration: 0.55, ease: 'easeInOut' }}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="loading"
+              className="absolute inset-0 flex items-center justify-center"
+              exit={{ opacity: 0, scale: 0.8 }}
+            >
+              <div className="w-8 h-8 rounded-full border-2 border-white border-t-transparent animate-spin" />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
-      <div className="flex flex-col items-center gap-3 w-full max-w-xs">
+      <motion.div
+        className="flex flex-col items-center gap-3 w-full max-w-xs"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5, duration: 0.4 }}
+      >
         <CartoonButton
           label={downloading ? 'downloading...' : '↓ download'}
           color="bg-white"
@@ -181,7 +208,7 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
           color="bg-zinc-300"
           onClick={onRestart}
         />
-      </div>
+      </motion.div>
     </motion.div>
   );
 }
