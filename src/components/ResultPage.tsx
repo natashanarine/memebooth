@@ -130,12 +130,21 @@ export function ResultPage({ photos, memes, onRestart }: ResultPageProps) {
       transition={{ duration: 0.5 }}
     >
       <h1
-        className="font-black tracking-tight text-white mb-2"
-        style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}
+        className="text-white mb-2 uppercase"
+        style={{
+          fontFamily: 'Impact, "Arial Narrow Bold", sans-serif',
+          fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
+          letterSpacing: '0.05em',
+        }}
       >
-        your meme booth
+        AW SO CUTE!
       </h1>
-      <p className="text-gray-500 text-sm uppercase tracking-widest mb-8">4 poses. 1 strip.</p>
+      <p
+        className="text-gray-500 text-sm uppercase tracking-widest mb-8"
+        style={{ fontFamily: 'Impact, "Arial Narrow Bold", sans-serif' }}
+      >
+        DON'T FORGET TO POST IT ON YOUR STORY
+      </p>
 
       <canvas ref={canvasRef} className="hidden" />
 

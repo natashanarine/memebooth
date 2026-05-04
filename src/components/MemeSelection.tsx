@@ -53,7 +53,7 @@ export function MemeSelection({ onConfirm, onBack }: MemeSelectionProps) {
             className="tracking-tight leading-none text-white"
             style={{ ...IMPACT, fontSize: 'clamp(1.8rem, 5vw, 3rem)' }}
           >
-            choose your memes
+            CHOOSE YOUR MEMES
           </h1>
           <p className="text-sm tracking-widest uppercase mt-1" style={{ ...IMPACT, color: '#555' }}>
             pick exactly {PICK}
