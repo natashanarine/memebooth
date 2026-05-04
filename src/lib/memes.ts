@@ -25,6 +25,12 @@ export const ALL_MEMES: Meme[] = [
     imageUrl: '/memes/monkey-peace.jpg',
   },
   {
+    id: 'sus',
+    name: 'Sus',
+    pose: 'bring one finger to the side of your mouth',
+    imageUrl: '/memes/monkey-sus.jpg',
+  },
+  {
     id: 'shocked',
     name: 'Soft Launch',
     pose: 'cup both hands under your chin',
@@ -59,12 +65,6 @@ export const ALL_MEMES: Meme[] = [
     name: 'You Frfr',
     pose: 'extend both arms and point at the camera',
     imageUrl: '/memes/point-forward.jpg',
-  },
-  {
-    id: 'sus',
-    name: 'Sus',
-    pose: 'bring one finger to the side of your mouth',
-    imageUrl: '/memes/monkey-sus.jpg',
   },
   {
     id: 'victory',
