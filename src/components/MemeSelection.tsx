@@ -79,8 +79,8 @@ export function MemeSelection({ onConfirm, onBack }: MemeSelectionProps) {
         <div
           className="grid gap-4 mx-auto"
           style={{
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            maxWidth: 720,
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            maxWidth: 900,
           }}
         >
           {ALL_MEMES.map(meme => {
