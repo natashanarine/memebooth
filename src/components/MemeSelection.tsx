@@ -143,7 +143,7 @@ export function MemeSelection({ onConfirm, onBack }: MemeSelectionProps) {
         style={{ background: 'linear-gradient(to top, #0a0a0a 70%, transparent)' }}
       >
         <CartoonButton
-          label="Let's Go →"
+          label="let's go →"
           color="bg-emerald-400"
           disabled={selected.size !== PICK}
           onClick={handleConfirm}

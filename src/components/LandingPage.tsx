@@ -60,7 +60,7 @@ export function LandingPage({ onStart }: LandingPageProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 0.5 }}
         >
-          <CartoonButton label="START" color="bg-white" onClick={onStart} />
+          <CartoonButton label="start" color="bg-white" onClick={onStart} />
         </motion.div>
       </div>
 

@@ -364,7 +364,7 @@ export function PhotoBooth({ memes, onComplete, onBack }: PhotoBoothProps) {
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-8">
           <div className="text-5xl">📷</div>
           <p className="text-center text-red-400 text-base max-w-sm" style={IMPACT}>{errorMsg}</p>
-          <CartoonButton label="Go Back" color="bg-white" onClick={onBack} />
+          <CartoonButton label="go back" color="bg-white" onClick={onBack} />
         </div>
       )}
 
